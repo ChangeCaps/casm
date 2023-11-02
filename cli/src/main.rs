@@ -1,16 +1,14 @@
-use clap::Parser;
+mod build;
 
-#[derive(Parser)]
-struct BuildArgs {
-    /// The input file to use
-    input: String,
-}
+use std::io;
 
-#[derive(Parser)]
+use clap::{Parser, Subcommand};
+
+#[derive(Subcommand)]
 enum SubCommand {
     /// Build the project
     #[clap(name = "build")]
-    Build(BuildArgs),
+    Build(build::BuildArgs),
 }
 
 #[derive(Parser)]
@@ -19,6 +17,10 @@ struct Args {
     subcmd: SubCommand,
 }
 
-fn main() {
+fn main() -> io::Result<()> {
     let args = Args::parse();
+
+    match args.subcmd {
+        SubCommand::Build(args) => build::build(args),
+    }
 }
