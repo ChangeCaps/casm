@@ -24,3 +24,5 @@ impl Error {
         }
     }
 }
+
+pub type ParseError = Diagnostic<SourceId>;

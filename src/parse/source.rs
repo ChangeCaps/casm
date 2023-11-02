@@ -1,4 +1,4 @@
-use std::{collections::HashMap, ops::Index};
+use std::{collections::HashMap, fs, ops::Index, path::PathBuf};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct SourceId {
@@ -19,7 +19,17 @@ impl SourceId {
 
 #[derive(Clone, Debug)]
 pub struct File {
+    pub path: PathBuf,
     pub contents: String,
+}
+
+impl File {
+    pub fn read(path: impl Into<PathBuf>) -> std::io::Result<Self> {
+        let path = path.into();
+        let contents = fs::read_to_string(&path)?;
+
+        Ok(Self { path, contents })
+    }
 }
 
 #[derive(Clone, Debug, Default)]
